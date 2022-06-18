@@ -1,7 +1,8 @@
 from errors.application_error import ApplicationError
 from utilities.data_validation_utility import validate_user_full_name, validate_date_format, is_date_is_in_range, \
     validate_email, validate_contact, validate_password
-from utilities.service_utility import convert_string_to_date, generate_random_id, hash_text
+from utilities.service_utility import convert_string_to_date, generate_random_id, hash_text, is_same_with_hashed_value,\
+    generate_jwt
 from utilities.database_utility import DatabaseUtility
 from repositories.user_repository import find_user_by_id, find_user_by_email, find_user_by_contact, insert_new_user
 from schemas.database_schema import User
@@ -62,3 +63,37 @@ def add_new_user(__full_name: str, __dob: str, __email: str, __contact: str, __p
 
     # return user object
     return __user
+
+
+def login_user(__email: str, __password: str):
+    """
+    function to log in a user
+    :param __email: email address of the user account
+    :param __password: password of the user account
+    :return: json web token if the credentials were correct
+    """
+    # validate given data
+    validate_email(__email=__email)
+    validate_password(__password=__password)
+
+    # check if user exists with given email
+    __user = find_user_by_email(__email=__email, __session=DatabaseUtility.get_session())
+    if __user is None:
+        raise ApplicationError(code=HTTPStatus.NOT_FOUND,
+                               message=f"user not found with email: {__email}")
+
+    # check if given password is correct
+    if not is_same_with_hashed_value(__hashed_value=__user.user_password, __normal_value=__password):
+        raise ApplicationError(code=HTTPStatus.UNAUTHORIZED,
+                               message="invalid password")
+
+    # check if user is deleted
+    if __user.user_deleted:
+        raise ApplicationError(code=HTTPStatus.FORBIDDEN,
+                               message="user account is deleted")
+
+    # generate and send jwt
+    return generate_jwt(__payload={
+        "created_on": str(datetime.today()),
+        "user_id": __user.user_id
+    })

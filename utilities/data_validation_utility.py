@@ -19,18 +19,20 @@ def check_if_request_has_expected_content_type(__request: request, __content_typ
                                message=f"a valid request body of type {__content_type} is required")
 
 
-def check_if_request_body_has_required_keys(__body: dict, __keys: list[str]):
+def check_if_request_body_has_required_keys(__body: dict, __keys: dict[str: bool]):
     """
     function to validate if request body has required keys
     :param __body: request body data as dictionary
-    :param __keys: keys to find in request body data
+    :param __keys: dictionary of keys to find in request body data,
+    where the corresponding boolean value represents if that key is required or optional
     :return: None
     """
     # check if all required keys are present in request body
     for __key in __keys:
         if __key not in __body:
-            raise ApplicationError(code=HTTPStatus.BAD_REQUEST,
-                                   message=f"{__key} is required")
+            if __keys[__key]:
+                raise ApplicationError(code=HTTPStatus.BAD_REQUEST,
+                                       message=f"{__key} is required")
 
 
 def validate_user_full_name(__full_name: str):

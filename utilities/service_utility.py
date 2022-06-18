@@ -1,9 +1,11 @@
 from datetime import datetime
-from bcrypt import hashpw, gensalt
+from bcrypt import hashpw, gensalt, checkpw
+from jwt import encode
 import uuid
 import socket
 
 from utilities.data_validation_utility import validate_date_format
+from utilities.environment_utility import get_environment_variable_value
 
 
 def get_current_ip_address():
@@ -53,3 +55,24 @@ def hash_text(__text: str):
     :return: hashed text
     """
     return hashpw(password=__text.encode(encoding="utf-8"), salt=gensalt(rounds=12))
+
+
+def is_same_with_hashed_value(__hashed_value: str, __normal_value: str):
+    """
+    function to compare a given string with a corresponding hashed string
+    :param __hashed_value: the hashed string to compare with
+    :param __normal_value: the actual string to compare
+    :return: True if both the strings are same, False otherwise
+    """
+    return checkpw(password=__normal_value.encode("utf-8"), hashed_password=bytes(__hashed_value))
+
+
+def generate_jwt(__payload: dict):
+    """
+    function to generate json web token from given payload
+    :param __payload: payload to encode via json web token
+    :return: encoded json web token
+    """
+    __jwt_key = get_environment_variable_value("jwt_key")
+    __jwt_algorithm = get_environment_variable_value("jwt_algorithm")
+    return encode(payload=__payload, key=__jwt_key, algorithm=__jwt_algorithm)
