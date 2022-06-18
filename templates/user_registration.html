@@ -1,0 +1,74 @@
+{% extends "base.html" %} {% block title %} User Sign Up | TJ {% endblock %} {%
+block body %}
+<div class="container px-5 my-5">
+	<form
+		id="user-registration-form"
+		method="post"
+		action="#"
+	>
+		<div class="mb-3">
+			<label class="form-label" for="fullName">Full name</label>
+			<input
+				class="form-control"
+				id="fullName"
+				name="full-name"
+				type="text"
+				placeholder="Enter Full Name"
+				required
+			/>
+		</div>
+        <div class="mb-3">
+			<label class="form-label" for="dob">Date of Birth</label>
+			<input
+				class="form-control"
+				id="dob"
+				name="dob"
+				type="date"
+				required
+			/>
+		</div>
+		<div class="mb-3">
+			<label class="form-label" for="email">Email Address</label>
+			<input
+				class="form-control"
+				id="email"
+				name="email"
+				type="email"
+				placeholder="Enter Email Address"
+				required
+			/>
+		</div>
+		<div class="mb-3">
+			<label class="form-label" for="contact">Contact Number</label>
+			<input
+				class="form-control"
+				id="contact"
+				name="contact"
+				type="number"
+				placeholder="Enter Contact Number"
+				required
+			/>
+		</div>
+		<div class="mb-3">
+			<label class="form-label" for="password">Password</label>
+			<input
+				class="form-control"
+				id="password"
+				name="password"
+				type="password"
+				placeholder="Enter Password"
+				required
+			/>
+		</div>
+		<div class="d-grid">
+			<button class="btn btn-success" id="submitButton" type="submit">
+				Sign Up
+			</button>
+		</div>
+		<p>
+			Already Registered?
+			<a href="#">Sign In</a>
+		</p>
+	</form>
+</div>
+{% endblock %}
