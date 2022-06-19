@@ -8,24 +8,6 @@ from utilities.data_validation_utility import validate_date_format
 from utilities.environment_utility import get_environment_variable_value
 
 
-def get_current_ip_address():
-    """
-    function to get current machine's ip address
-    :return: ip address of current machine
-    """
-    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    s.settimeout(0)
-    try:
-        # doesn't even have to be reachable
-        s.connect(('8.8.8.8', 1))
-        ip = s.getsockname()[0]
-    except:
-        ip = '127.0.0.1'
-    finally:
-        s.close()
-    return ip
-
-
 def convert_string_to_date(__date: str):
     """
     function to convert string to date

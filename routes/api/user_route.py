@@ -44,6 +44,10 @@ def api_user_registration():
 
 
 def api_user_login():
+    """
+    function to sign in an existing user and generate json web token
+    :return: generated json web token
+    """
     if request.method == "POST":
         # check for content type
         check_if_request_has_expected_content_type(__request=request, __content_type="application/json")
