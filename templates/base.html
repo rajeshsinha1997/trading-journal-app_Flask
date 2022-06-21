@@ -27,8 +27,8 @@
 				>
 					Trading Journal
 				</a>
-				{% if current_user %}
-				<a href="/logout">
+				{% if __user_signed_in %}
+				<a href="{{ url_for('user_logout') }}">
 					<button class="btn btn-warning mr-auto" type="button">
 						Sign Out
 					</button>
