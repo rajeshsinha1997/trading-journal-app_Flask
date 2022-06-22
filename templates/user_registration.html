@@ -4,7 +4,7 @@ block body %}
 	<form
 		id="user-registration-form"
 		method="post"
-		action="#"
+		action="{{ url_for('user_registration') }}"
 	>
 		<div class="mb-3">
 			<label class="form-label" for="fullName">Full name</label>
@@ -67,7 +67,7 @@ block body %}
 		</div>
 		<p>
 			Already Registered?
-			<a href="#">Sign In</a>
+			<a href="{{ url_for('user_login') }}">Sign In</a>
 		</p>
 	</form>
 </div>

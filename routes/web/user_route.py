@@ -72,6 +72,8 @@ def user_logout():
         __response = make_response(redirect(url_for("user_login")))
         delete_jwt_cookie_from_browser(__response=__response)
         return __response
+    else:
+        return redirect(url_for("user_login"))
 
 
 def user_home():

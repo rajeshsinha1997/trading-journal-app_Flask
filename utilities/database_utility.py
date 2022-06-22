@@ -2,6 +2,8 @@ from sqlalchemy import create_engine
 from sqlalchemy.engine import Engine
 from sqlalchemy.orm import declarative_base, Session
 
+from utilities.environment_utility import get_environment_variable_value
+
 
 class DatabaseUtility:
     """
@@ -18,7 +20,8 @@ class DatabaseUtility:
         :return: None
         """
         if cls._database_engine is None:
-            cls._database_engine = create_engine(url="sqlite:///tj.db", echo=True)
+            cls._database_engine = create_engine(url=get_environment_variable_value("DATABASE_CONNECTION_URL"),
+                                                 echo=True)
 
     @classmethod
     def _create_base(cls):
