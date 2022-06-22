@@ -1,7 +1,8 @@
 from http import HTTPStatus
 
-from flask import request, Response
+from flask import request
 
+from errors.application_error import ApplicationError
 from utilities.data_validation_utility import check_if_request_has_expected_content_type, \
     check_if_request_body_has_required_keys
 from services.user_service import add_new_user, login_user
@@ -41,6 +42,9 @@ def api_user_registration():
 
         # send response
         return {"user_id": __new_user.user_id}, HTTPStatus.CREATED
+    else:
+        raise ApplicationError(code=HTTPStatus.METHOD_NOT_ALLOWED,
+                               message=f"request method not allowed: {request.method}")
 
 
 def api_user_login():
@@ -66,4 +70,7 @@ def api_user_login():
 
         # send response
         return {"token": __jwt}, HTTPStatus.OK
+    else:
+        raise ApplicationError(code=HTTPStatus.METHOD_NOT_ALLOWED,
+                               message=f"request method not allowed: {request.method}")
 
